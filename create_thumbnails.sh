@@ -10,19 +10,19 @@ force=$3
 verb=$4
 
 for fname in `ls $src | grep "jpg\|jpeg"`; do
-  srcPath="$src/$fname"
-  destPath="$dest/$fname"
-  destPathMini="$dest/thumbnail.$fname"
+  src_path="$src/$fname"
+  dest_path="$dest/$fname"
+  dest_path_mini="$dest/thumbnails/$fname"
   
-  if [ "$force" = "true" -o ! -f $destPathMini ]; then
+  if [ "$force" = "true" -o ! -f $dest_path_mini ]; then
     if [ "$verb" = "true" ]; then
-      echo "Creating thumbnail for $srcPath..."
+      echo "Creating thumbnail for $src_path..."
     fi
-    convert -resize "$WIDTHx$HEIGHT" $srcPath $destPathMini
+    convert -resize "$WIDTHx$HEIGHT" $src_path $dest_path_mini
 
     if [ "$verb" = "true" ]; then
-      echo "Copying $srcPath into $dest..."
+      echo "Copying $src_path into $dest..."
     fi
-    cp $srcPath $destPath
+    cp $src_path $dest_path
   fi
 done
