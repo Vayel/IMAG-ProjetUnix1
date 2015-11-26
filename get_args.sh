@@ -6,17 +6,18 @@ DIR=$(cd "$(dirname "$0")" && pwd)
 
 force=false;
 verb=false;
+index="index.html";
 
 while test $# -ne 0; do
   case "$1" in
-    "--source")
+    "--source"|"-s")
       shift; src="$1";
       ;;
-    "--dest")
+    "--dest"|"-d")
       shift; dest="$1";
       ;;
-    "--index")
-      shift; index_path="$1";
+    "--index"|"-i")
+      shift; index="$1";
       ;;
     "--help"|"-h")
       usage;
