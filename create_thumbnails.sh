@@ -6,10 +6,11 @@ HEIGHT=200
 
 src=$1
 dest=$2
-force=$3
-verb=$4
+pattern=$3
+force=$4
+verb=$5
 
-for fname in `ls $src | grep "jpg\|jpeg"`; do
+for fname in `ls $src | grep $pattern`; do
   src_path="$src/$fname"
   dest_path="$dest/$fname"
   dest_path_mini="$dest/thumbnails/$fname"
