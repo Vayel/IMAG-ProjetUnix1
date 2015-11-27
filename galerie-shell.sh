@@ -7,7 +7,7 @@ DIR=$(cd "$(dirname "$0")" && pwd)
 
 index_path="$dest/$index"
 thumbnails_dir="$dest/thumbnails"
-ext_pattern="jpg$\|jpeg$"
+ext_pattern="\.jpe*g$"
 
 if [ ! -d $thumbnails_dir ]; then
   mkdir $thumbnails_dir 

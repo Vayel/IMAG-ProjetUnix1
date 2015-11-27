@@ -1,16 +1,34 @@
 #!/bin/sh
 
-echo "<figure>";
+src=$1
+url=$2
+name=$3
+date=$4
+width=$5
+height=$6
 
-if [ "$3" != "" ]; then
-  echo "<a href=\"$3\" title=\"$2\">";
+echo "<figure>"
+
+echo "<a href=\"$url\" title=\"$name\">"
+echo "<img src=\"$src\" alt=\"$name\" />"
+echo "</a>"
+
+echo "<figcaption>"
+echo "<b>Name:</b> $name"
+
+echo "<br/><b>Date:</b> "
+if [ "$date" != "" ]; then
+  echo "$date"
+else
+  echo "unknown"
 fi
 
-echo "<img src=\"$1\" alt=\"$2\" />";
-
-if [ "$3" != "" ]; then
-  echo "</a>";
+echo "<br/><b>Size:</b> "
+if [ "$width" != "" -a "$height" != "" ]; then
+  echo "${width}x${height}"
+else
+  echo "unknown"
 fi
+echo "</figcaption>"
 
-echo "<figcaption>$2</figcaption>";
-echo "</figure>";
+echo "</figure>"
