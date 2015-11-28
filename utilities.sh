@@ -27,3 +27,9 @@ html_tail() {
 html_title() {
   echo "<h1>$1</h1>"
 }
+
+create_dir () {
+  if [ ! -d "$1" ]; then
+    mkdir "$1"
+  fi
+}
