@@ -3,20 +3,23 @@
 DIR=$(cd "$(dirname "$0")" && pwd)
 
 . ./utilities.sh
-. ./create-images.sh
+. ./create-image.sh
 . ./create-html-file.sh
 . ./display-images.sh
 . ./get-args.sh
 
 get_args "$@"
 index_path="$dest/$index"
-thumbnails_dir="$dest/thumbnails"
-ext_pattern="\.jpe*g$"
+dest_thumbnails="$dest/thumbnails"
 
-create_dir $thumbnails_dir
-create_images $src $dest $ext_pattern $force $verb
+create_dir $dest_thumbnails
 create_html_file $index_path
 
 html_head "TP Unix - galerie HTML" > $index_path
-display_images $dest $index $ext_pattern
+
+for fname in `find_images $src`; do
+  create_image $src $fname $dest $dest_thumbnails $force $verb
+done
+display_images $dest $index
+
 html_tail >> $index_path

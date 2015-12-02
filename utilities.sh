@@ -33,3 +33,13 @@ create_dir () {
     mkdir "$1"
   fi
 }
+
+find_images () {
+  find "$1" -maxdepth 1 -name "*.jpg" -printf "%f\n" -o -name "*.jpeg" -printf "%f\n"
+}
+
+verbose () {
+  if [ "$1" = "true" ]; then
+    echo "$2"
+  fi
+}

@@ -2,19 +2,21 @@
 
 DIR=$(cd "$(dirname "$0")" && pwd)
 
+. ./utilities.sh
 . ./generate-img-page.sh
 . ./generate-img-fragment.sh
 
 display_images () {
-  local dest=$1
-  local index_name=$2
-  local pattern=$3
+  local dest=$1; shift
+  local index_name=$1
 
   local index_path="$dest/$index_name"
-  local n=`ls $dest | grep $pattern | wc -l`
+  local n=`find_images $dest | wc -l`
   local i=0
 
-  for fname in `ls $dest | grep $pattern`; do
+  echo "$n"
+
+  for fname in `find_images $dest`; do
     # Create page for fullsized image
     local name=`echo "$fname" | sed "s/\(.*\)$pattern/\1/"`
     local prev=`expr $i + $n - 1` # Because -1 % n = -1 != n-1
