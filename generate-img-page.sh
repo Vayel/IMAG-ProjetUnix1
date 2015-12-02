@@ -3,7 +3,6 @@
 DIR=$(cd "$(dirname "$0")" && pwd)
 
 . ./utilities.sh
-. ./create-html-file.sh
 
 header () {
   echo "<header>"
@@ -21,17 +20,17 @@ img () {
 }
 
 generate_img_page () {
-  local img_name=$1
-  local img_src=$2
-  local fpath=$3
-  local index_path=$4
-  local prev=$5
-  local next=$6
+  local name=$1; shift
+  local src=$1; shift
+  local path=$1; shift
+  local index=$1; shift
+  local prev=$1; shift
+  local next=$1
 
-  create_html_file $fpath
+  create_html_file $path
 
-  html_head $img_name > $fpath
-  header $img_name $index_path $prev $next >> $fpath
-  img $img_src $img_name >> $fpath
-  html_tail >> $fpath
+  html_head $name > $path
+  header $name $index $prev $next >> $path
+  img $src $name >> $path
+  html_tail >> $path
 }

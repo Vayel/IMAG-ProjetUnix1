@@ -1,5 +1,7 @@
 #!/bin/sh
 
+DIR=$(cd "$(dirname "$0")" && pwd)
+
 html_head() {
   echo "<!DOCTYPE html>"
   echo "<html>"
@@ -34,6 +36,17 @@ create_dir () {
   fi
 }
 
+create_html_file () {
+  if [ -f $1 ]; then
+    read -p "The file $1 already exists. Do you want to overwrite it? [Y/n]" yn
+    if [ "$yn" == "n" -o "$yn" == "N" ]; then
+      exit
+    fi
+  fi
+
+  touch $1
+}
+
 find_images () {
   find "$1" -maxdepth 1 -name "*.jpg" -printf "%f\n" -o -name "*.jpeg" -printf "%f\n"
 }
@@ -42,4 +55,9 @@ verbose () {
   if [ "$1" = "true" ]; then
     echo "$2"
   fi
+}
+
+get_fname () {
+  path=$1
+  echo "${path%.*}"
 }
