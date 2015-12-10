@@ -87,3 +87,25 @@ width_from_exif () {
 height_from_exif () {
   echo "$1" | grep "Image Height:" | grep -Po "[0-9]+"
 }
+
+get_prev_page () {
+  local i=$1; shift
+  local paths=($@)
+
+  prev=`expr $i - 1` # -1 % n = -1 
+  prev=${paths[$prev]}
+  prev=`get_name "$prev"`
+  echo "$prev.html"
+}
+
+get_next_page () {
+  local i=$1; shift
+  local n=$1; shift
+  local paths=($@)
+
+  next=`expr $i + 1`
+  next=`expr $next % $n`
+  next=${paths[$next]}
+  next=`get_name "$next"`
+  echo "$next.html"
+}

@@ -13,18 +13,20 @@ create_html_file $index_path
 
 html_head "TP Unix - galerie HTML" > $index_path
 
-n=`find_images $src | wc -l`
 i=0
+n=`find_images $src | wc -l`
+paths=(`find_images $src`)
 
-for path in `find_images $src`; do
+for path in ${paths[@]}; do
   fname=`get_fname $path`
   name=`get_name $path`
-  url="$i.html"
-  prev=`expr $i + $n - 1`; prev=`expr $prev % $n` # -1 % n = -1 != n-1
-  next=`expr $i + 1`; next=`expr $next % $n`
+  
+  url="$name.html"
+  prev=`get_prev_page $i ${paths[@]}`
+  next=`get_next_page $i $n ${paths[@]}`
 
   . ./create-image.sh $path $dest_thumbnails $force $verb
-  . ./generate-img-page.sh "$name" "$fname" "$dest/$url" "$index" "$prev.html" "$next.html"
+  . ./generate-img-page.sh "$dest" "$fname" "$index" "$prev" "$next"
   . ./display-image.sh "$dest_thumbnails/$fname" "thumbnails/$fname" $index_path $url
 
   i=`expr $i + 1`

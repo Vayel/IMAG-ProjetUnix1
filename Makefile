@@ -11,17 +11,24 @@ IMAGE_DESC=$(IMAGES:%.jpg=$(DEST)/%.inc)
 IMAGE_SRC=$(IMAGES:%=$(SOURCE)/%)
 
 %.inc:
-	./create-inc.sh "$@" "$(SOURCE)" "$(THUMB_DIRNAME)" > $@
+	./make-inc.sh "$@" "$(SOURCE)" "$(THUMB_DIRNAME)" > $@
 
 %.html: $(IMAGE_DESC)
-	./generate-index.sh "$(IMAGE_DESC)" > $@
+	./make-index.sh "$(IMAGE_DESC)" > $@
+
+.PHONY: pages
+pages:
+	./make-pages.sh "$(IMAGE_SRC)" "$(DEST)" "$(INDEX_NAME)"
 
 .PHONY: gallery
 gallery:
-	./create-images.sh "$(IMAGE_SRC)" "$(THUMB_DIR)" false false
+	./make-gallery.sh "$(IMAGE_SRC)" "$(THUMB_DIR)" false false
+
+.PHONY: build
+build: gallery pages pages pages pages pages pages pages $(INDEX_PATH)
 
 .PHONY: view
-view: gallery $(INDEX_PATH)
+view: build
 	firefox $(INDEX_PATH)
 
 clean:

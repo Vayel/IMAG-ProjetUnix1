@@ -20,18 +20,20 @@ img () {
 }
 
 generate_img_page () {
-  local name=$1; shift
-  local src=$1; shift
-  local page_path=$1; shift
+  local dir=$1; shift
+  local fname=$1; shift
   local index=$1; shift
   local prev=$1; shift
   local next=$1
+
+  local name=`get_name "$fname"`
+  local page_path="$dir/$name.html"
 
   create_html_file $page_path
 
   html_head $name > $page_path
   header $name $index $prev $next >> $page_path
-  img $src $name >> $page_path
+  img $fname $name >> $page_path
   html_tail >> $page_path
 }
 

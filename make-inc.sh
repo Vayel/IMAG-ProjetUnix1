@@ -10,4 +10,4 @@ dt=`date_from_exif "$exif"`
 w=`width_from_exif "$exif"`
 h=`height_from_exif "$exif"`
 
-./generate-img-fragment.sh "$3/$name.jpg" "$name.jpg" "$name" "$dt" "$w" "$h"
+./generate-img-fragment.sh "$3/$name.jpg" "$name.html" "$name" "$dt" "$w" "$h"
