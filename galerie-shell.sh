@@ -3,12 +3,8 @@
 DIR=$(cd "$(dirname "$0")" && pwd)
 
 . ./utilities.sh
-. ./create-image.sh
-. ./display-image.sh
-. ./generate-img-page.sh
-. ./get-args.sh
 
-get_args "$@"
+. ./get-args.sh "$@"
 index_path="$dest/$index"
 dest_thumbnails="$dest/thumbnails"
 
@@ -27,10 +23,9 @@ for path in `find_images $src`; do
   prev=`expr $i + $n - 1`; prev=`expr $prev % $n` # -1 % n = -1 != n-1
   next=`expr $i + 1`; next=`expr $next % $n`
 
-  create_image $path $dest_thumbnails $force $verb
-
-  generate_img_page "$name" "$fname" "$dest/$url" "$index" "$prev.html" "$next.html"
-  display_image "$dest_thumbnails/$fname" "thumbnails/$fname" $index_path $url
+  . ./create-image.sh $path $dest_thumbnails $force $verb
+  . ./generate-img-page.sh "$name" "$fname" "$dest/$url" "$index" "$prev.html" "$next.html"
+  . ./display-image.sh "$dest_thumbnails/$fname" "thumbnails/$fname" $index_path $url
 
   i=`expr $i + 1`
 done

@@ -27,3 +27,5 @@ create_image () {
     cp $src_path $dest_path
   fi
 }
+
+create_image "$@"

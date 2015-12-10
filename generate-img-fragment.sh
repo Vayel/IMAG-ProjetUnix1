@@ -32,3 +32,5 @@ generate_img_fragment () {
     echo "</figcaption>"
   echo "</figure>"
 }
+
+generate_img_fragment "$@"

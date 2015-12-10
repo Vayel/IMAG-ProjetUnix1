@@ -45,3 +45,5 @@ get_args () {
     exit 1
   fi
 }
+
+get_args "$@"

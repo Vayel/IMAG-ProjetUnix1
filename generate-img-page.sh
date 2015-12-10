@@ -34,3 +34,5 @@ generate_img_page () {
   img $src $name >> $page_path
   html_tail >> $page_path
 }
+
+generate_img_page "$@"

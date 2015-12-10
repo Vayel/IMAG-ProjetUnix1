@@ -3,7 +3,6 @@
 DIR=$(cd "$(dirname "$0")" && pwd)
 
 . ./utilities.sh
-. ./generate-img-fragment.sh
 
 display_image () {
   local path=$1; shift
@@ -20,5 +19,7 @@ display_image () {
   local w=`echo "$exif" | grep "Image Width:" | grep -Po "[0-9]+"`
   local h=`echo "$exif" | grep "Image Height:" | grep -Po "[0-9]+"`
 
-  generate_img_fragment "$src" "$url" "$name" "$dt" $w $h >> $index
+  . ./generate-img-fragment.sh "$src" "$url" "$name" "$dt" $w $h >> $index
 }
+
+display_image "$@"
