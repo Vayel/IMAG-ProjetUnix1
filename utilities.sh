@@ -71,3 +71,19 @@ get_dir () {
   path=$1
   echo "${path%/*}"
 }
+
+get_exif () {
+  ./exiftags -a $1
+}
+
+date_from_exif () {
+  echo "$1" | grep "Image Created:" | sed "s/Image Created: \(.*\)/\1/"
+}
+
+width_from_exif () {
+  echo "$1" | grep "Image Width:" | grep -Po "[0-9]+"
+}
+
+height_from_exif () {
+  echo "$1" | grep "Image Height:" | grep -Po "[0-9]+"
+}

@@ -1,19 +1,31 @@
-# Source and destination directories, to be configured here:
-SOURCE=../exemples-html/galerie_style/
+SOURCE=./src
 DEST=./dest
 
+THUMB_DIRNAME=thumbnails
+THUMB_DIR=$(DEST)/$(THUMB_DIRNAME)
+INDEX_NAME=index.html
+INDEX_PATH=$(DEST)/index.html
 
 IMAGES=${shell cd $(SOURCE) && echo *.jpg}
-THUMBS=$(IMAGES:%=$(DEST)/%)
 IMAGE_DESC=$(IMAGES:%.jpg=$(DEST)/%.inc)
+IMAGE_SRC=$(IMAGES:%=$(SOURCE)/%)
 
+%.inc:
+	./create-inc.sh "$@" "$(SOURCE)" "$(THUMB_DIRNAME)" > $@
 
-# TODO
+%.html: $(IMAGE_DESC)
+	./generate-index.sh "$(IMAGE_DESC)" > $@
+
+.PHONY: gallery
 gallery:
+	./create-images.sh "$(IMAGE_SRC)" "$(THUMB_DIR)" false false
 
-view:
+.PHONY: view
+view: gallery $(INDEX_PATH)
+	firefox $(INDEX_PATH)
 
 clean:
+	find $(DEST) -mindepth 1 -delete
 
 # Simplified version of exiftags's Makefile
 EXIFTAGS_OBJS=exiftags-1.01/exif.o exiftags-1.01/tagdefs.o exiftags-1.01/exifutil.o \

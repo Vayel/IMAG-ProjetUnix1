@@ -14,12 +14,12 @@ display_image () {
   local name=`get_name $path`
 
   # EXIF data
-  local exif=`./exiftags -a $path`
-  local dt=`echo "$exif" | grep "Image Created:" | sed "s/Image Created: \(.*\)/\1/"`
-  local w=`echo "$exif" | grep "Image Width:" | grep -Po "[0-9]+"`
-  local h=`echo "$exif" | grep "Image Height:" | grep -Po "[0-9]+"`
+  local exif=`get_exif "$path"`
+  local dt=`date_from_exif "$exif"`
+  local w=`width_from_exif "$exif"`
+  local h=`height_from_exif "$exif"`
 
-  . ./generate-img-fragment.sh "$src" "$url" "$name" "$dt" $w $h >> $index
+  . ./generate-img-fragment.sh "$src" "$url" "$name" $dt $w $h >> $index
 }
 
 display_image "$@"
