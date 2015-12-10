@@ -48,7 +48,7 @@ create_html_file () {
 }
 
 find_images () {
-  find "$1" -maxdepth 1 -name "*.jpg" -printf "%f\n" -o -name "*.jpeg" -printf "%f\n"
+  find "$1" -maxdepth 1 -name "*.jpg" -o -name "*.jpeg"
 }
 
 verbose () {
@@ -57,7 +57,17 @@ verbose () {
   fi
 }
 
+get_name () {
+  fname=`get_fname $1`
+  echo "${fname%.*}"
+}
+
 get_fname () {
   path=$1
-  echo "${path%.*}"
+  echo "${path##*/}"
+}
+
+get_dir () {
+  path=$1
+  echo "${path%/*}"
 }

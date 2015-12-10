@@ -12,7 +12,7 @@ display_image () {
   local name=$1; shift
   local url=$1
 
-  local thumbnail_src="thumbnails/$fname"
+  local thumbnail_src="$THUMBNAIL_DIRNAME/$fname"
 
   # EXIF data
   local exif=`./exiftags -a $dest/$fname`
