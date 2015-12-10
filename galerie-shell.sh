@@ -1,7 +1,6 @@
 #!/bin/sh
 
 DIR=$(cd "$(dirname "$0")" && pwd)
-THUMBNAIL_DIRNAME="thumbnails"
 
 . ./utilities.sh
 . ./create-image.sh
@@ -11,8 +10,9 @@ THUMBNAIL_DIRNAME="thumbnails"
 
 get_args "$@"
 index_path="$dest/$index"
+dest_thumbnails="$dest/thumbnails"
 
-create_dir "$dest/$THUMBNAIL_DIRNAME"
+create_dir "$dest_thumbnails"
 create_html_file $index_path
 
 html_head "TP Unix - galerie HTML" > $index_path
@@ -27,10 +27,10 @@ for path in `find_images $src`; do
   prev=`expr $i + $n - 1`; prev=`expr $prev % $n` # -1 % n = -1 != n-1
   next=`expr $i + 1`; next=`expr $next % $n`
 
-  create_image $path $dest $force $verb
+  create_image $path $dest_thumbnails $force $verb
 
   generate_img_page "$name" "$fname" "$dest/$url" "$index" "$prev.html" "$next.html"
-  display_image $fname $dest $index_path $name $url
+  display_image "$dest_thumbnails/$fname" "thumbnails/$fname" $index_path $url
 
   i=`expr $i + 1`
 done

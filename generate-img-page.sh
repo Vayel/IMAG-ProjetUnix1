@@ -22,15 +22,15 @@ img () {
 generate_img_page () {
   local name=$1; shift
   local src=$1; shift
-  local path=$1; shift
+  local page_path=$1; shift
   local index=$1; shift
   local prev=$1; shift
   local next=$1
 
-  create_html_file $path
+  create_html_file $page_path
 
-  html_head $name > $path
-  header $name $index $prev $next >> $path
-  img $src $name >> $path
-  html_tail >> $path
+  html_head $name > $page_path
+  header $name $index $prev $next >> $page_path
+  img $src $name >> $page_path
+  html_tail >> $page_path
 }

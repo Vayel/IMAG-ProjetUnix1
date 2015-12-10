@@ -9,14 +9,14 @@ create_image () {
   local HEIGHT=200
 
   local src_path=$1; shift
-  local dest_dir=$1; shift
+  local dest_thumbnails=$1; shift
   local force=$1; shift
   local verb=$1
 
   local src_dir=`get_dir $src_path`
   local fname=`get_fname $src_path`
+  local dest_dir="$dest_thumbnails/.."
   local dest_path="$dest_dir/$fname"
-  local dest_thumbnails="$dest_dir/$THUMBNAIL_DIRNAME"
   local dest_path_thumbnail="$dest_thumbnails/$fname"
 
   if [ "$force" = "true" -o ! -f $dest_path_thumbnail ]; then
