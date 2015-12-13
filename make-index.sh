@@ -1,8 +1,8 @@
 #!/bin/sh
 
-DIR=$(cd "$(dirname "$0")" && pwd)
+HERE=$(cd "$(dirname "$0")" && pwd)
 
-. ./utilities.sh
+. "$HERE"/utilities.sh
 
 html_head "TP Unix - galerie HTML"
 

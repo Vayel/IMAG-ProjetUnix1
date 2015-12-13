@@ -1,31 +1,27 @@
 #!/bin/sh
 
-DIR=$(cd "$(dirname "$0")" && pwd)
+HERE=$(cd "$(dirname "$0")" && pwd)
 
-. ./utilities.sh
+. "$HERE"/utilities.sh
 
-create_image () {
-  local WIDTH=200
-  local HEIGHT=200
+WIDTH=200
+HEIGHT=200
 
-  local src_path=$1; shift
-  local dest_thumbnails=$1; shift
-  local force=$1; shift
-  local verb=$1
+src_path=$1; shift
+dest_thumbs=$1; shift
+force=$1; shift
+verb=$1
 
-  local src_dir=`get_dir $src_path`
-  local fname=`get_fname $src_path`
-  local dest_dir="$dest_thumbnails/.."
-  local dest_path="$dest_dir/$fname"
-  local dest_path_thumbnail="$dest_thumbnails/$fname"
+src_dir=`get_dir "$src_path"`
+fname=`get_fname "$src_path"`
+dest_dir="$dest_thumbs/.."
+dest_path="$dest_dir/$fname"
+dest_path_thumb="$dest_thumbs/$fname"
 
-  if [ "$force" = "true" -o ! -f $dest_path_thumbnail ]; then
-    verbose $verb "Creating thumbnail for $src_path..."
-    convert -resize "$WIDTHx$HEIGHT" $src_path $dest_path_thumbnail
+if [ "$force" = "true" -o ! -f "$dest_path_thumb" ]; then
+  verbose $verb "Creating thumbnail for $src_path..."
+  convert -resize "$WIDTHx$HEIGHT" "$src_path" "$dest_path_thumb"
 
-    verbose $verb "Copying $src_path into $dest_dir..."
-    cp $src_path $dest_path
-  fi
-}
-
-create_image "$@"
+  verbose $verb "Copying $src_path into $dest_dir..."
+  cp "$src_path" "$dest_path"
+fi

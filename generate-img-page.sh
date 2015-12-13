@@ -1,8 +1,8 @@
 #!/bin/sh
 
-DIR=$(cd "$(dirname "$0")" && pwd)
+HERE=$(cd "$(dirname "$0")" && pwd)
 
-. ./utilities.sh
+. "$HERE"/utilities.sh
 
 header () {
   echo "<header>"
@@ -19,22 +19,18 @@ img () {
   echo "<img src=\"$1\" alt=\"$2\" />"
 }
 
-generate_img_page () {
-  local dir=$1; shift
-  local fname=$1; shift
-  local index=$1; shift
-  local prev=$1; shift
-  local next=$1
+dir=$1; shift
+fname=$1; shift
+index=$1; shift
+prev=$1; shift
+next=$1
 
-  local name=`get_name "$fname"`
-  local page_path="$dir/$name.html"
+name=`get_name "$fname"`
+page_path="$dir/$name.html"
 
-  create_html_file $page_path
+create_html_file "$page_path"
 
-  html_head $name > $page_path
-  header $name $index $prev $next >> $page_path
-  img $fname $name >> $page_path
-  html_tail >> $page_path
-}
-
-generate_img_page "$@"
+html_head "$name" > "$page_path"
+header "$name" "$index" "$prev" "$next" >> "$page_path"
+img "$fname" "$name" >> "$page_path"
+html_tail >> "$page_path"

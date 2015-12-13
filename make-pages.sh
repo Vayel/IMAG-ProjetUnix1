@@ -1,22 +1,24 @@
 #!/bin/sh
 
-DIR=$(cd "$(dirname "$0")" && pwd)
+HERE=$(cd "$(dirname "$0")" && pwd)
 
-. ./utilities.sh
+. "$HERE"/utilities.sh
 
-i=0
-paths=($1)
-n=`echo "${paths[@]}" | wc -w`
-echo "$n"
+src=$1; shift
+dest=$1; shift
+index=$1
 
-for path in ${paths[@]}; do
-  fname=`get_fname $path`
-  name=`get_name $path`
+n=`count_images "$src"`
+paths=("$src"/*.jpg)
+
+for ((i = 0; i < $n; i++)); do # Use indexes because of whitespaces
+  path=${paths[$i]}
+  fname=`get_fname "$path"`
+  name=`get_name "$path"`
+
   url="$name.html"
-  prev=`get_prev_page $i ${paths[@]}`
-  next=`get_next_page $i $n ${paths[@]}`
+  prev=`get_prev_page "$src" $i`
+  next=`get_next_page "$src" $i $n`
 
-  . ./generate-img-page.sh "$2" "$fname" "$3" "$prev" "$next"
-
-  i=`expr $i + 1`
+  "$HERE"/generate-img-page.sh "$dest" "$fname" "$index" "$prev" "$next"
 done

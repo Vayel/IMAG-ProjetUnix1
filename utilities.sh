@@ -1,6 +1,6 @@
 #!/bin/sh
 
-DIR=$(cd "$(dirname "$0")" && pwd)
+HERE=$(cd "$(dirname "$0")" && pwd)
 
 html_head() {
   echo "<!DOCTYPE html>"
@@ -32,23 +32,23 @@ html_title() {
 
 create_dir () {
   if [ ! -d "$1" ]; then
-    mkdir "$1"
+    mkdir -p "$1"
   fi
 }
 
 create_html_file () {
-  if [ -f $1 ]; then
+  if [ -f "$1" ]; then
     read -p "The file $1 already exists. Do you want to overwrite it? [Y/n]" yn
     if [ "$yn" == "n" -o "$yn" == "N" ]; then
       exit
     fi
   fi
 
-  touch $1
+  touch "$1"
 }
 
 find_images () {
-  find "$1" -maxdepth 1 -name "*.jpg" -o -name "*.jpeg"
+  find "$1" -maxdepth 1 -name "*.jpg"
 }
 
 verbose () {
@@ -58,7 +58,7 @@ verbose () {
 }
 
 get_name () {
-  fname=`get_fname $1`
+  fname=`get_fname "$1"`
   echo "${fname%.*}"
 }
 
@@ -73,7 +73,7 @@ get_dir () {
 }
 
 get_exif () {
-  ./exiftags -a $1
+  "$HERE"/exiftags -a "$1"
 }
 
 date_from_exif () {
@@ -89,8 +89,8 @@ height_from_exif () {
 }
 
 get_prev_page () {
-  local i=$1; shift
-  local paths=($@)
+  local paths=("$1"/*.jpg)
+  local i=$2
 
   prev=`expr $i - 1` # -1 % n = -1 
   prev=${paths[$prev]}
@@ -99,13 +99,17 @@ get_prev_page () {
 }
 
 get_next_page () {
-  local i=$1; shift
-  local n=$1; shift
-  local paths=($@)
+  local paths=("$1"/*.jpg)
+  local i=$2
+  local n=$3
 
   next=`expr $i + 1`
   next=`expr $next % $n`
   next=${paths[$next]}
   next=`get_name "$next"`
   echo "$next.html"
+}
+
+count_images () {
+  find_images "$1" | wc -l
 }

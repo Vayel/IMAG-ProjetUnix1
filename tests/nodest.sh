@@ -1,14 +1,12 @@
 #! /bin/sh
 
-# Test sur un répertoire source dont l'un des fichiers contient une étoile.
-
 HERE=$(cd "$(dirname "$0")" && pwd)
 PATH="$HERE/..:$PATH"
 
 rm -fr source dest
-mkdir -p source dest
+mkdir -p source
 
-make-img.sh source/image-\*.jpg
+make-img.sh source/image1.jpg
 make-img.sh source/image2.jpg
 
 galerie-shell.sh --source source --dest dest
