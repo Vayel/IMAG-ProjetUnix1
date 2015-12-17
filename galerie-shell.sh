@@ -24,7 +24,7 @@ for ((i = 0; i < $n; i++)); do # Use indexes because of whitespaces
   name=`get_name "$path"`
   
   url="$name.html"
-  prev=`get_prev_page "$src" $i`
+  prev=`get_prev_page "$src" $i $n`
   next=`get_next_page "$src" $i $n`
 
   "$HERE"/create-image.sh "$path" "$dest_thumbs" $force $verb

@@ -91,8 +91,10 @@ height_from_exif () {
 get_prev_page () {
   local paths=("$1"/*.jpg)
   local i=$2
+  local n=$3
 
-  prev=`expr $i - 1` # -1 % n = -1 
+  prev=`expr $i + $n - 1` # -1 % n = -1 != n-1
+  prev=`expr $prev % $n`
   prev=${paths[$prev]}
   prev=`get_name "$prev"`
   echo "$prev.html"

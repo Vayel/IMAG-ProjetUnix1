@@ -8,8 +8,9 @@ PATH="$HERE/..:$PATH"
 rm -fr source dest
 mkdir -p source dest
 
-make-img.sh source/image-\*.jpg
+make-img.sh source/image1.jpg
 make-img.sh source/image2.jpg
+make-img.sh source/image-\*.jpg
 
 galerie-shell.sh --source source --dest dest
 
