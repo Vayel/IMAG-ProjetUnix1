@@ -11,30 +11,34 @@ INDEX_PATH=$(DEST)/index.html
 IMAGES=${shell cd $(SOURCE) && echo *.jpg}
 IMAGE_DESC=$(IMAGES:%.jpg=$(DEST)/%.inc)
 IMAGE_SRC=$(IMAGES:%=$(SOURCE)/%)
+IMAGE_DEST=$(IMAGES:%=$(DEST)/%)
 
-%.inc: ./exiftags
-	./make-inc.sh "$@" "$(SOURCE)" "$(THUMB_DIRNAME)" > "$@"
+.PHONY: dir
+dir:
+	${shell . "$(HERE)"/utilities.sh ; create_dir "$(THUMB_DIR)"}
+
+%.inc: dir ./exiftags
+	$(HERE)/make-inc.sh "$@" "$(SOURCE)" "$(THUMB_DIRNAME)" > "$@"
 
 %.html: $(IMAGE_DESC)
-	./make-index.sh "$(IMAGE_DESC)" > "$@"
+	$(HERE)/make-index.sh "$(IMAGE_DESC)" > "$@"
+
+%.jpg: dir
+	$(HERE)/make-thumb.sh "$@" "$(SOURCE)" "$(THUMB_DIR)"
 
 .PHONY: pages
-pages:
-	./make-pages.sh "$(SOURCE)" "$(DEST)" "$(INDEX_NAME)"
+pages: dir
+	$(HERE)/make-pages.sh "$(SOURCE)" "$(DEST)" "$(INDEX_NAME)"
 
 .PHONY: gallery
-gallery:
-	./make-gallery.sh "$(SOURCE)" "$(THUMB_DIR)" false false
-
-.PHONY: build
-build: gallery pages pages pages pages pages pages pages $(INDEX_PATH)
+gallery: $(IMAGES) pages $(INDEX_PATH)
 
 .PHONY: view
-view: build
+view: gallery 
 	firefox "$(INDEX_PATH)"
 
 clean:
-	./clean.sh "$(HERE)/$(DEST)"
+	$(HERE)/clean.sh "$(DEST)"
 
 # Simplified version of exiftags's Makefile
 EXIFTAGS_OBJS=exiftags-1.01/exif.o exiftags-1.01/tagdefs.o exiftags-1.01/exifutil.o \
