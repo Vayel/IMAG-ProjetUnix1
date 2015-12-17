@@ -1,5 +1,7 @@
-SOURCE=./src
-DEST=./dest
+HERE=$(shell pwd)
+
+SOURCE=$(HERE)/src
+DEST=$(HERE)/dest
 
 THUMB_DIRNAME=thumbnails
 THUMB_DIR=$(DEST)/$(THUMB_DIRNAME)
@@ -10,7 +12,7 @@ IMAGES=${shell cd $(SOURCE) && echo *.jpg}
 IMAGE_DESC=$(IMAGES:%.jpg=$(DEST)/%.inc)
 IMAGE_SRC=$(IMAGES:%=$(SOURCE)/%)
 
-%.inc:
+%.inc: ./exiftags
 	./make-inc.sh "$@" "$(SOURCE)" "$(THUMB_DIRNAME)" > "$@"
 
 %.html: $(IMAGE_DESC)
@@ -32,7 +34,7 @@ view: build
 	firefox "$(INDEX_PATH)"
 
 clean:
-	find "$(DEST)" -mindepth 1 -delete
+	./clean.sh "$(HERE)/$(DEST)"
 
 # Simplified version of exiftags's Makefile
 EXIFTAGS_OBJS=exiftags-1.01/exif.o exiftags-1.01/tagdefs.o exiftags-1.01/exifutil.o \
@@ -49,4 +51,3 @@ EXIFTAGS_HDRS=exiftags-1.01/exif.h exiftags-1.01/exifint.h \
 
 ./exiftags: $(EXIFTAGS_OBJS)
 	$(CC) $(CFLAGS) -o $@ $(EXIFTAGS_OBJS) -lm
-
